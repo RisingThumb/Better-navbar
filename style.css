@@ -1,0 +1,33 @@
+.tree {
+  margin:0;
+  padding:0;
+  font-family: monospace;
+  border-right: 1px solid gray;
+  user-select:none;
+  font-size:0.8rem;
+  text-transform: capitalize;
+}
+
+.tree details {
+  margin-bottom:0;
+  color:black;
+  pointer-events: none;
+}
+.tree details a{
+  pointer-events: all;
+
+}
+.tree details:has(> ul) {
+  pointer-events: all;
+}
+.tree details summary {
+  margin-top:0;
+}
+.tree details > summary {
+  list-style-type:none;
+  margin-left:0.75rem;
+}
+.tree details summary::marker,
+.tree details summary::-webkit-details-marker {
+  display:none;
+}

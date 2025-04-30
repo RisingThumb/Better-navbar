@@ -1,0 +1,19 @@
+fn conf_enable_better_navbar {
+    enable_better_navbar=yes
+    conf_enable_app better_navbar
+}
+
+fn better_navbar_init {
+    if (! ~ $#enable_better_navbar 0 ) {
+        fn nav_tree {
+            treeXML=`{mktemp};
+            tree --gitfile ./apps/better_navbar/ignorefile.ignore -I "[*/_*]" --noreport --dirsfirst -f -F -X $sitedir | sed 's|.md||g;s|.tpl||g;s|sites|https:/|g' > $treeXML
+            for (req_path_part in $req_paths_list) {
+                direpath=`{echo $sitedir^$req_path_part | sed 's:/$::;s|sites|https:/|g'}
+                # We need to use GNU Sed here as plan9 sed doesn't do -i
+                /usr/bin/sed -i 's|"'^$direpath^'"|"'^$direpath^'" open="opened"|' $treeXML
+            }
+            xsltproc apps/better_navbar/treeXSL.xsl $treeXML | /usr/bin/sed 's|&lt;|<|g;s|&gt;|>|g;s|<ul/>||g;'
+        }
+    }
+}
